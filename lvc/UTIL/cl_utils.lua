@@ -425,7 +425,6 @@ function UTIL:TogVehicleExtras(veh, extra_id, state, repair)
 					end
 				end
 			else
-				print('[LVC] SetVehicleExtra ON', veh, extra_id)
 				SetVehicleExtra(veh, extra_id, false)
 				UTIL:Print(Lang:t('info.extra_on', {extra = extra_id}), false)
 			end

@@ -132,7 +132,6 @@ function RegisterVehicle(model, config)
 	if type(model) ~= 'string' or type(config) ~= 'table' then
 		return
 	end
-	print('[LVC] RegisterVehicle: ' .. model)
 	if config.tones ~= nil then
 		SIREN_ASSIGNMENTS[model] = config.tones
 	end

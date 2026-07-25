@@ -89,7 +89,7 @@ cvs_display_label = '999'
 --	Text shown on the large display button of the CVS controller. This button acts as the "all lights on" toggle.
 cvs_footer_label = 'CL Development'
 --	Small text shown along the bottom of the CVS controller panel.
-cvs_sound_volume = 0.7
+cvs_sound_volume = 0.4
 --	Volume (0.0 - 1.0) for the CVS controller sounds below.
 cvs_sound_all_on = 'cvs/999mode.wav'
 --	Sound played when 999 / all-lights-on mode is engaged. Path is relative to `lvc/UI/sounds/` and MUST include the file extension.
