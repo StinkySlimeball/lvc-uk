@@ -127,7 +127,7 @@ CreateThread( function()
 		end
 		print(('\t|\t       LATEST STABLE: %-27s|'):format(repo_version))
 	end
-	print(('\t|\tEDITION: %-27s|'):format('CL Development'))
+	print(('\t|\t           EDITION: %-27s|'):format('CL Development'))
 	if GetResourceState('lux_vehcontrol') ~= 'started' and GetResourceState('lux_vehcontrol') ~= 'starting' then
 		if GetCurrentResourceName() == 'lvc' then
 			if community_id ~= nil and community_id ~= '' then
