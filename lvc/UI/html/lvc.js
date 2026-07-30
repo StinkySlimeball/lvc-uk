@@ -23,8 +23,19 @@ var time_folder = "day/";
 var ta_pattern = "ta/pattern_3/";
 var audioPlayer = null;
 var soundID = 0;
+var activePlayers = [];
 var scale = 0.6;
 var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+
+function releaseSoundPlayer(player) {
+  var idx = activePlayers.indexOf(player);
+  if (idx !== -1) {
+    activePlayers.splice(idx, 1);
+  }
+  if (audioPlayer === player) {
+    audioPlayer = null;
+  }
+}
 
 const elements = 
 {
@@ -164,32 +175,35 @@ function sendData( name, data ) {
 
 //Credit to xotikorukx playSound Fn.
 function playSound(file, volume){
-  // Stop the previous sound first.  We capture it in a local var so that
-  // its pending play() promise can only null *its own* slot, not a newer one.
-  var prevPlayer = audioPlayer;
-  audioPlayer = null;
-  if (prevPlayer != null) {
-	prevPlayer.pause();
-	prevPlayer.src = '';
+  if (file == null || file === '') {
+    return;
   }
-
-  soundID++;
 
   // Use the file as-is if it already carries an extension (e.g. custom .wav sounds),
   // otherwise default to .ogg for the built-in button SFX schemes.
   var src = (file.indexOf(".") !== -1) ? file : file + ".ogg";
+  soundID++;
+
   var player = new Audio("../sounds/" + src);
   player.volume = volume;
+  activePlayers.push(player);
   audioPlayer = player;
 
   var didPlayPromise = player.play();
 
+  player.onended = function() {
+    releaseSoundPlayer(player);
+  };
+  player.onerror = function() {
+    releaseSoundPlayer(player);
+  };
+
   if (didPlayPromise === undefined) {
-	if (audioPlayer === player) audioPlayer = null;
+    releaseSoundPlayer(player);
   } else {
-	didPlayPromise.catch(function(error) {
-	  if (audioPlayer === player) audioPlayer = null;
-	});
+    didPlayPromise.catch(function(error) {
+      releaseSoundPlayer(player);
+    });
   }
 }
   

@@ -553,12 +553,11 @@ function ChangeMainSirenStage(vehicle, newstate, silent)
 			end
 			local next_tone = UTIL:GetNextSirenTone(oldstate, vehicle, true)
 			if next_tone ~= nil and next_tone ~= oldstate then
-				-- Briefly change to the next tone (flourish), broadcast it to all clients,
-				-- then cancel everyone after 200ms.
+				-- SIREN BLIP
 				SetLxSirenStateForVeh(vehicle, next_tone)
 				TriggerServerEvent('lvc:SetLxSirenState_s', next_tone)
 				CreateThread(function()
-					Wait(200)
+					Wait(250)
 					SetLxSirenStateForVeh(vehicle, 0)
 					TriggerServerEvent('lvc:SetLxSirenState_s', 0)
 				end)
