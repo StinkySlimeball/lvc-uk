@@ -179,6 +179,16 @@ function playSound(file, volume){
     return;
   }
 
+  // Stop any currently playing sound before starting the next one.
+  if (audioPlayer != null) {
+    try {
+      audioPlayer.pause();
+      audioPlayer.currentTime = 0;
+      audioPlayer.src = '';
+    } catch (e) {}
+    releaseSoundPlayer(audioPlayer);
+  }
+
   // Use the file as-is if it already carries an extension (e.g. custom .wav sounds),
   // otherwise default to .ogg for the built-in button SFX schemes.
   var src = (file.indexOf(".") !== -1) ? file : file + ".ogg";

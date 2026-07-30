@@ -127,7 +127,6 @@ CreateThread( function()
 		end
 		print(('\t|\t       LATEST STABLE: %-27s|'):format(repo_version))
 	end
-	print(('\t|\t         EDITION: %-27s|'):format('CL Development  '))
 	if GetResourceState('lux_vehcontrol') ~= 'started' and GetResourceState('lux_vehcontrol') ~= 'starting' then
 		if GetCurrentResourceName() == 'lvc' then
 			if community_id ~= nil and community_id ~= '' then
@@ -142,11 +141,11 @@ CreateThread( function()
 					print('\t|\t          ^4BETA UPDATE AVAILABLE                  ^7|')
 					print('\t|^4                      DOWNLOAD AT:                      ^7|')
 					print('\t|^2 github.com/TrevorBarns/luxart-vehicle-control/releases ^7|')
-				--	EXPERMENTAL VERSION
+				--	EXPERIMENTAL VERSION
 				elseif curr_version > repo_version or curr_version == repo_beta_version then
 					print('\t^7|________________________________________________________|')
 					print('\t|\t               ^3BETA VERSION                      ^7|')
-					-- IS THE USER AWARE THEY DOWNLOADED EXPERMENTAL CHECK CONVARS
+					-- IS THE USER AWARE THEY DOWNLOADED EXPERIMENTAL CHECK CONVARS
 					if not experimental then
 						print('\t|^3 THIS VERSION IS IN DEVELOPMENT AND IS NOT RECOMMENDED  ^7|')
 						print('\t|^3 BUGS MAY EXIST. IF THIS WAS A MISTAKE DOWNLOAD THE     ^7|')
