@@ -90,9 +90,14 @@ exports('IsCvsPanelVisible', function()
 end)
 
 --[[Play a CVS controller sound file (path relative to lvc/UI/sounds/, with extension).]]
-function CVS:PlaySound(file)
+function CVS:PlaySound(file, priority)
 	if file ~= nil and file ~= '' then
-		AUDIO:Play(file, cvs_sound_volume or 0.7, true)
+		local is_priority = priority == true
+		if not is_priority then
+			local lower = string.lower(file or '')
+			is_priority = lower:find('scenemode') ~= nil or lower:find('leavemode') ~= nil or lower:find('999mode') ~= nil
+		end
+		AUDIO:Play(file, cvs_sound_volume or 0.7, true, is_priority)
 	end
 end
 
@@ -382,17 +387,17 @@ function CVS:CycleModes(vehicle)
 		--	At Scene -> Cancel (everything off)
 		CVS:ToggleScene(vehicle)
 		CVS:CutSiren(vehicle)
-		CVS:PlaySound(GetCvsSound(vehicle, 'leave'))
+		CVS:PlaySound(GetCvsSound(vehicle, 'leave'), true)
 	elseif st.all_on then
 		--	999 -> At Scene. ToggleScene turns the 999 lights off and the scene lights on
 		--	in ONE deduped pass, so we must NOT call ToggleAllOn first (that would disable
 		--	then re-enable shared extras in the same frame, which GTA ignores).
 		CVS:ToggleScene(vehicle)
-		CVS:PlaySound(GetCvsSound(vehicle, 'scene'))
+		CVS:PlaySound(GetCvsSound(vehicle, 'scene'), true)
 	else
 		--	Off -> 999
 		CVS:ToggleAllOn(vehicle)
-		CVS:PlaySound(GetCvsSound(vehicle, 'all_on'))
+		CVS:PlaySound(GetCvsSound(vehicle, 'all_on'), true)
 	end
 end
 
@@ -411,16 +416,16 @@ function CVS:Press(button)
 	elseif button == 'at_scene' then
 		CVS:ToggleScene(veh)
 		if EnsureState(veh).at_scene then
-			CVS:PlaySound(GetCvsSound(veh, 'scene'))
+			CVS:PlaySound(GetCvsSound(veh, 'scene'), true)
 		else
-			CVS:PlaySound(GetCvsSound(veh, 'leave'))
+			CVS:PlaySound(GetCvsSound(veh, 'leave'), true)
 		end
 	elseif button == 'all_on' then
 		CVS:ToggleAllOn(veh)
 		if EnsureState(veh).all_on then
-			CVS:PlaySound(GetCvsSound(veh, 'all_on'))
+			CVS:PlaySound(GetCvsSound(veh, 'all_on'), true)
 		else
-			CVS:PlaySound(GetCvsSound(veh, 'leave'))
+			CVS:PlaySound(GetCvsSound(veh, 'leave'), true)
 		end
 	else
 		local st = EnsureState(veh)

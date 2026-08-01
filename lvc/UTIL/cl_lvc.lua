@@ -492,7 +492,7 @@ end
 	Plays locally for the driver and broadcasts to nearby players so everyone hears it.]]
 function PlayHornSound(file)
 	if siren_horn_confirm_enabled and file ~= nil and file ~= '' then
-		AUDIO:Play(file, siren_horn_volume or 0.7, true)
+		AUDIO:Play(file, siren_horn_volume or 0.7, true, true)
 		TriggerServerEvent('lvc:PlayHorn_s', file)
 	end
 end

@@ -24,6 +24,7 @@ var ta_pattern = "ta/pattern_3/";
 var audioPlayer = null;
 var soundID = 0;
 var activePlayers = [];
+var currentSoundPriority = false;
 var scale = 0.6;
 var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
 
@@ -34,6 +35,7 @@ function releaseSoundPlayer(player) {
   }
   if (audioPlayer === player) {
     audioPlayer = null;
+    currentSoundPriority = false;
   }
 }
 
@@ -58,7 +60,7 @@ const backup =
 window.addEventListener('message', function(event) {
 	var type = event.data._type;
 	if (type == "audio") {
-		playSound(event.data.file, event.data.volume);
+		playSound(event.data.file, event.data.volume, event.data.interrupt === true);
 	}else if ( type == "setResourceName" ) {
 		resourceName = event.data.name
 	}else if (type == "hud:setItemState") {
@@ -174,13 +176,16 @@ function sendData( name, data ) {
 
 
 //Credit to xotikorukx playSound Fn.
-function playSound(file, volume){
+function playSound(file, volume, interrupt){
   if (file == null || file === '') {
     return;
   }
 
-  // Stop any currently playing sound before starting the next one.
-  if (audioPlayer != null) {
+  var shouldInterrupt = interrupt === true;
+
+  // Keep local-only mode sounds playing, but let the horn/siren-change cue be the
+  // one that can interrupt the shared audio stream.
+  if (audioPlayer != null && shouldInterrupt) {
     try {
       audioPlayer.pause();
       audioPlayer.currentTime = 0;
@@ -198,6 +203,7 @@ function playSound(file, volume){
   player.volume = volume;
   activePlayers.push(player);
   audioPlayer = player;
+  currentSoundPriority = shouldInterrupt;
 
   var didPlayPromise = player.play();
 

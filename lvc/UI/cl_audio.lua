@@ -79,8 +79,9 @@ end)
 
 ---------------------------------------------------------------------
 --[[Play NUI front in audio.]]
-function AUDIO:Play(soundFile, soundVolume, schemeless)
+function AUDIO:Play(soundFile, soundVolume, schemeless, interrupt)
 	local schemeless = schemeless or false
+	local interrupt = interrupt or false
 	if not schemeless then
 		soundFile = AUDIO.button_sfx_scheme .. '/' .. soundFile;
 	end
@@ -88,7 +89,8 @@ function AUDIO:Play(soundFile, soundVolume, schemeless)
 	SendNUIMessage({
 	  _type  = 'audio',
 	  file   = soundFile,
-	  volume = soundVolume
+	  volume = soundVolume,
+	  interrupt = interrupt
 	})
 end
 
